@@ -21,8 +21,10 @@ namespace Server
             services.AddControllers();
             services.AddSingleton<ArticleService>();
             services.AddScoped<BlogQuery>();
+            services.AddScoped<BlogMutation>();
             services.AddScoped<ISchema, BlogSchema>();
             services.AddSingleton<ArticleType>();
+            services.AddSingleton<ArticleInputType>();
             services.AddScoped<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
         }

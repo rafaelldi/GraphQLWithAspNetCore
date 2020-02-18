@@ -8,6 +8,7 @@ namespace Server
         public BlogSchema(IDependencyResolver resolver) : base(resolver)
         {
             Query = resolver.Resolve<BlogQuery>();
+            Mutation = resolver.Resolve<BlogMutation>();
         }
     }
 }

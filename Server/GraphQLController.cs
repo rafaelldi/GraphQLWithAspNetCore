@@ -28,7 +28,8 @@ namespace Server
             var result = await _documentExecuter.ExecuteAsync(new ExecutionOptions
             {
                 Schema = _schema,
-                Query = graphQlQuery.Query
+                Query = graphQlQuery.Query,
+                Inputs = graphQlQuery.Variables?.ToInputs()
             });
 
             if (result.Errors?.Count > 0)
