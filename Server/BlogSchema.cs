@@ -1,14 +1,13 @@
-using GraphQL;
 using GraphQL.Types;
 
 namespace Server
 {
     public class BlogSchema : Schema
     {
-        public BlogSchema(IDependencyResolver resolver) : base(resolver)
+        public BlogSchema(ArticleService service)
         {
-            Query = resolver.Resolve<BlogQuery>();
-            Mutation = resolver.Resolve<BlogMutation>();
+            Query = new BlogQuery(service);
+            Mutation = new BlogMutation(service);
         }
     }
 }

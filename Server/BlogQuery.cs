@@ -6,9 +6,7 @@ namespace Server
     {
         public BlogQuery(ArticleService articleService)
         {
-            Field<ListGraphType<ArticleType>>(
-                "list", 
-                resolve: context => articleService.Articles);
+            Field<ListGraphType<ArticleType>>("list", resolve: context => articleService.Articles);
         }
     }
 }

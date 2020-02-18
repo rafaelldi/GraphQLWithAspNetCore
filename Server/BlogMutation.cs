@@ -10,7 +10,7 @@ namespace Server
                 "create",
                 arguments: new QueryArguments
                 {
-                    new QueryArgument<ArticleInputType>{Name = "article"}
+                    new QueryArgument<ArticleInputType> { Name = "article" }
                 },
                 resolve: context =>
                 {
