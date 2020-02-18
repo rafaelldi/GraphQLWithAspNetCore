@@ -1,4 +1,5 @@
 using GraphQL;
+using GraphQL.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -19,12 +20,11 @@ namespace Server
         {
             services.AddControllers();
             services.AddSingleton<ArticleService>();
-            services.AddSingleton<BlogSchema>();
+            services.AddSingleton<ISchema, BlogSchema>();
             services.AddSingleton<BlogQuery>();
             services.AddSingleton<BlogMutation>();
             services.AddSingleton<ArticleType>();
             services.AddSingleton<ArticleInputType>();
-            services.AddSingleton<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
         }
 

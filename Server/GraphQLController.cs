@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using GraphQL;
+using GraphQL.Types;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Server
@@ -10,9 +11,9 @@ namespace Server
     public class GraphQLController : ControllerBase
     {
         private readonly IDocumentExecuter _documentExecuter;
-        private readonly BlogSchema _schema;
+        private readonly ISchema _schema;
 
-        public GraphQLController(BlogSchema schema, IDocumentExecuter documentExecuter)
+        public GraphQLController(ISchema schema, IDocumentExecuter documentExecuter)
         {
             _schema = schema;
             _documentExecuter = documentExecuter;
@@ -28,7 +29,7 @@ namespace Server
             {
                 Schema = _schema,
                 Query = graphQlQuery.Query,
-                Inputs = graphQlQuery.Variables?.ToString().ToInputs()
+                Inputs = graphQlQuery.Variables?.ToInputs()
             });
 
             if (result.Errors?.Count > 0)
