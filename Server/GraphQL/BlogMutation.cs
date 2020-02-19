@@ -1,6 +1,7 @@
+using GraphQL;
 using GraphQL.Types;
 
-namespace Server
+namespace Server.GraphQL
 {
     public class BlogMutation : ObjectGraphType
     {
@@ -10,7 +11,7 @@ namespace Server
                 "create",
                 arguments: new QueryArguments
                 {
-                    new QueryArgument<ArticleInputType> { Name = "article" }
+                    new QueryArgument<NonNullGraphType<ArticleInputType>> { Name = "article" }
                 },
                 resolve: context =>
                 {

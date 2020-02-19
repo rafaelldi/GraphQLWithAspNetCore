@@ -1,9 +1,10 @@
-using GraphQL;
-using GraphQL.Types;
+using GraphQL.Server;
+using GraphQL.Server.Ui.GraphiQL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Server.GraphQL;
 
 namespace Server
 {
@@ -18,23 +19,18 @@ namespace Server
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
             services.AddSingleton<ArticleService>();
-            services.AddSingleton<ISchema, BlogSchema>();
-            services.AddSingleton<BlogQuery>();
-            services.AddSingleton<BlogMutation>();
-            services.AddSingleton<ArticleType>();
-            services.AddSingleton<ArticleInputType>();
-            services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
+            services.AddScoped<BlogSchema>();
+
+            services.AddGraphQL()
+                .AddGraphTypes(ServiceLifetime.Scoped)
+                .AddSystemTextJson();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseGraphQL<BlogSchema>();
+            app.UseGraphiQLServer(new GraphiQLOptions());
         }
     }
 }

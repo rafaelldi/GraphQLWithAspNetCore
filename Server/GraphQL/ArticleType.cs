@@ -1,6 +1,6 @@
 using GraphQL.Types;
 
-namespace Server
+namespace Server.GraphQL
 {
     public class ArticleType : ObjectGraphType<Article>
     {
