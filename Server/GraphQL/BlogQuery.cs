@@ -10,7 +10,7 @@ namespace Server.GraphQL
         {
             Field<ListGraphType<ArticleType>>("list", resolve: context => articleService.Articles);
             Field<ListGraphType<ArticleType>>(
-                "filtered-list", 
+                "filtered_list", 
                 arguments: new QueryArguments
                 {
                     new  QueryArgument<StringGraphType> { Name = "title"}    
