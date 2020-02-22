@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,17 +31,24 @@ namespace Client
                 }
                 
                 using var client = _factory.CreateClient("localhost");
-                using var graphqlClient = client.AsGraphQLClient("http://localhost:5000");
+                using var graphqlClient = client.AsGraphQLClient("http://localhost:5000/graphql");
 
                 if (command is GetListCommand)
                 {
                     var getRequest = new GraphQLHttpRequest
                     {
-                        Query = @""
+                        Query = @"query
+{
+    list {
+        title
+        author  
+        content
+    }
+}"
                     };
-                    var response = await graphqlClient.SendQueryAsync<List<Article>>(getRequest, stoppingToken);
-                    Console.WriteLine($"We have {response.Data.Count} articles");
-                    foreach (var article in response.Data)
+                    var response = await graphqlClient.SendQueryAsync<GraphQLRespone>(getRequest, stoppingToken);
+                    Console.WriteLine($"We have {response.Data.List.Count} articles");
+                    foreach (var article in response.Data.List)
                     {
                         Console.WriteLine($"Article '{article.Title}' by {article.Author}");
                     }
@@ -56,9 +62,19 @@ namespace Client
                     var content = Console.ReadLine();
                     
                     var article = new Article {Title = title, Author = author, Content = content};
-                    var createRequest = new GraphQLHttpRequest
+                    var createRequest = new GraphQLHttpRequest()
                     {
-                        Query = @""
+                        Query = @"mutation($article: ArticleInputType!) 
+{
+    create(article: $article) {
+        title  
+        author  
+        content
+    }
+}",
+                        Variables = new {
+                            article
+                        }
                     };
                     await graphqlClient.SendMutationAsync<Article>(createRequest, stoppingToken);
                 }
